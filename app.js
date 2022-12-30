@@ -19,8 +19,6 @@ canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
 ctx.lineCap = 'round'; // ctx에서 initialize할 수 있는 메소드함수.
-ctx.fillStyle = '#ffffff';
-ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 let isPainting = false;
 let isFilling = false;
 
@@ -87,7 +85,7 @@ function onEraserClick() {
 
 function onFileChange(event) {
   const file = event.target.files[0];
-  const url = URL.createObjectURL(file);
+  const url = URL.createObjectURL(file); // URL을 통해 해당 파일에 접근해보는 것
   const image = new Image(); // HTML의 <img src='' />와 동일
   image.src = url;
 
@@ -107,7 +105,7 @@ function onDoubleClick(event) {
     ctx.lineWidth = 1;
     ctx.font = '68px serif';
     ctx.fillText(text, event.offsetX, event.offsetY);
-    ctx.restore();
+    ctx.restore(); // 이전 상태로 복구하는 메소드
     // 수정을 완료하면 restore 내장함수를 쓰면 됨
     // save와 restore 사이에는 어떤 수정을 하던 저장되지 않음
     // restore가 실행되면 이전에 저장된 상태로 돌아감
@@ -120,7 +118,7 @@ function onSaveClick() {
   a.href = url;
   a.download = 'myDrawing.jpg';
   a.click();
-  // data를 base62 문자열로 변환해서 저장해주는 고마운 메소드함수.
+  // URL을 base62이라는 문자열로 인코딩해서 저장해주는 고마운 메소드함수.
   // <a href='' download></a>을 이용해서 다운가능하게 하자.
   // a 태크에 download 속성을 넣으면 다운받을 수 있다.
 }
