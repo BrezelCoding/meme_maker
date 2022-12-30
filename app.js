@@ -1,5 +1,6 @@
 'use strict';
 
+const textInput = document.querySelector('#text');
 const fileInput = document.querySelector('#file');
 const modeBtn = document.querySelector('#mode-btn');
 const destroyBtn = document.querySelector('#destroy-btn');
@@ -16,6 +17,7 @@ const CANVAS_HEIGHT = 800;
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
+ctx.lineCap = 'round'; // ctx에서 initialize할 수 있는 함수.
 let isPainting = false;
 let isFilling = false;
 
@@ -93,6 +95,22 @@ function onFileChange(event) {
   };
 }
 
+function onDoubleClick(event) {
+  // save내장함수는 ctx의 현재 상태, 색상, 스타일 등 모든 것을 저장한다.
+  // 변경되는 코드가 실행되기 전 현재 상태와 선택들을 저장함.
+  const text = textInput.value;
+  if (text !== '') {
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.font = '68px serif';
+    ctx.fillText(text, event.offsetX, event.offsetY);
+    ctx.restore();
+    // 수정을 완료하면 restore 내장함수를 쓰면 됨
+    // save와 restore 사이에는 어떤 수정을 하던 저장되지 않음
+    // restore가 실행되면 이전에 저장된 상태로 돌아감
+  }
+}
+
 // Drawing Event
 canvas.addEventListener('mousemove', onMove);
 canvas.addEventListener('mousedown', startPainting);
@@ -112,3 +130,6 @@ eraserBtn.addEventListener('click', onEraserClick);
 
 // file Input
 fileInput.addEventListener('change', onFileChange);
+
+// Add the texts
+canvas.addEventListener('dblclick', onDoubleClick);
