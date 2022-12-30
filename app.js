@@ -1,5 +1,6 @@
 'use strict';
 
+const saveBtn = document.querySelector('#save');
 const textInput = document.querySelector('#text');
 const fileInput = document.querySelector('#file');
 const modeBtn = document.querySelector('#mode-btn');
@@ -17,7 +18,9 @@ const CANVAS_HEIGHT = 800;
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
-ctx.lineCap = 'round'; // ctx에서 initialize할 수 있는 함수.
+ctx.lineCap = 'round'; // ctx에서 initialize할 수 있는 메소드함수.
+ctx.fillStyle = '#ffffff';
+ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 let isPainting = false;
 let isFilling = false;
 
@@ -43,7 +46,7 @@ function onLineWidthChange(event) {
   ctx.lineWidth = event.target.value;
 }
 
-function onColorChange(evet) {
+function onColorChange(event) {
   ctx.strokeStyle = event.target.value;
   ctx.fillStyle = event.target.value;
 }
@@ -111,6 +114,17 @@ function onDoubleClick(event) {
   }
 }
 
+function onSaveClick() {
+  const url = canvas.toDataURL();
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'myDrawing.jpg';
+  a.click();
+  // data를 base62 문자열로 변환해서 저장해주는 고마운 메소드함수.
+  // <a href='' download></a>을 이용해서 다운가능하게 하자.
+  // a 태크에 download 속성을 넣으면 다운받을 수 있다.
+}
+
 // Drawing Event
 canvas.addEventListener('mousemove', onMove);
 canvas.addEventListener('mousedown', startPainting);
@@ -133,3 +147,6 @@ fileInput.addEventListener('change', onFileChange);
 
 // Add the texts
 canvas.addEventListener('dblclick', onDoubleClick);
+
+// Save the image
+saveBtn.addEventListener('click', onSaveClick);
